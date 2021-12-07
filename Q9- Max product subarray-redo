@@ -1,0 +1,65 @@
+https://leetcode.com/problems/maximum-product-subarray/
+
+DP solutionn--
+
+array has -ve as well as positive integers. we have to keep track of max until so far and min until so far.
+so that when min until so far gets multiplied with another -ve nuber,will become +ve thus willbecome maxsofar
+
+use dpMax and dpMin arrays where dpMax[i] denotes maximum subarray product ending at i and dpMin[i] denotes minimum subarray product ending at i.
+
+maximum subarray product starting at index i is not always A[i]*maxProduct(A[i+1:]) and can also be A[i]*minProduct(A[i+1:]). 
+This is because when A[i] >= 0, multiplying it with maximum product after i will yield the largest overall product.
+However, when A[i] < 0, we need to multiply it with minimum possible product after i to get the largest overall product 
+
+ int max(int a, int b,int c){
+        if(a>b){
+            if(a>c) return a;
+            else return c;
+        }
+        else {
+            if(b>c) return b;
+            else return c;
+        }
+    }
+    int min(int a,int b,int c) {
+         if(a<b){
+            if(a<c) return a;
+            else return c;
+        }
+        else {
+            if(b<c) return b;
+            else return c;
+        }
+    }
+    
+    int maxProduct(vector<int>& nums) {
+        int maxi=INT_MIN;
+        for(int i=0;i<nums.size();i++){
+            maxi=max(maxi,nums[i],INT_MIN);
+        }
+        int res=maxi;
+        int currMin=1,currMax=1;
+        for(int i=0;i<nums.size();i++){
+            int k=currMin*nums[i];
+            // currMin stores the product sofar be it-veor +ve. if-ve, we store it in hope of encountering another -ve tomake it+ve and store in currMax
+            currMin=min(currMin*nums[i],currMax*nums[i],nums[i]);
+            // currMax stores the max so far ignoring the -ve outcomes or lessprod outcomes
+            currMax=max(k,currMax*nums[i],nums[i]);
+            
+            res=max(res,currMax);
+        }
+        return res;
+        
+        OERRRR
+        
+        
+            int maxProduct(vector<int>& A) {
+        vector<int> dpMin(A), dpMax(A);
+        int ans = A[0];
+        for(int i = 1; i < size(A); i++) {
+            dpMin[i] = min(A[i], A[i] * (A[i] >= 0 ? dpMin[i-1] : dpMax[i-1]));
+            dpMax[i] = max(A[i], A[i] * (A[i] >= 0 ? dpMax[i-1] : dpMin[i-1]));
+            ans = max(ans, dpMax[i]);
+        }
+        return ans;
+    }
