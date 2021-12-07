@@ -1,0 +1,38 @@
+https://leetcode.com/problems/container-with-most-water/submissions/
+
+
+basically finding max area Area = length*min height of two poles. two pointer. keep taking areas and max of them store. and do l++ if height of l<r else r++
+
+
+recursive soln--
+
+    int maxAreaUtil(int i, int j, vector<int>& height, int &area) {
+        if(i<0||j<0||i>=height.size()||j>=height.size()) return 0;
+        
+        if(i>=j) return 0;
+        
+        int A1=(j-i)*min(height[j],height[i]);
+        
+        area=max(maxAreaUtil(i+1,j,height,area),max(maxAreaUtil(i,j-1,height,area),maxAreaUtil(i+1,j-1,height,area)));
+        
+        return max(A1,area);
+        
+    }
+    
+    
+    O(N)
+    
+     int maxArea(vector<int>& height) {
+       int area=INT_MIN;
+       // return maxAreaUtil(0,height.size()-1,height,area);
+        int l=0,r=height.size()-1;
+        while(l<r) {
+            int A=(r-l)*min(height[r],height[l]);
+            
+            area=max(A,area);
+            if(height[l]<height[r]) l++;
+            else r--; //equal or greater
+        }
+        return area;
+
+}
