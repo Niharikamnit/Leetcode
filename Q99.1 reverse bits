@@ -1,0 +1,18 @@
+l
+just get the last bit, if its on or off and add it to res and shift it by 31 bits to the end
+
+ uint32_t reverseBits(uint32_t n) {
+        int power=31;
+        uint32_t res=0;
+      while(n!=0) {
+          int k= n&1;
+          res+=k*pow(2,power);
+          //orrr
+          //res+=k<<power
+          //orr
+          // res=res|(k<<power)
+          power--;
+          n=n>>1;
+      }
+        return res;
+    }
