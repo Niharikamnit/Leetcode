@@ -1,0 +1,27 @@
+https://leetcode.com/problems/climbing-stairs/submissions/
+
+no.of ways to reach i can be made from two steps below it, which are i-1 with 1 stepjump and i-2 2 step jump, 
+and the no.of ways to reach i-1 and i-2 are computed before so add them up.
+
+
+my soln---
+
+        int dp[50];
+        dp[1]=1;
+        dp[2]=2;
+        for(int i=3;i<n+1;i++) {
+            dp[i]=dp[i-1]+dp[i-2];
+        }
+        return dp[n];
+
+
+
+no memeory soln--- idkkk
+
+int onestep=1,twostep=1;
+        for(int i=1;i<n;i++) {
+            int temp=onestep;
+            onestep=onestep+twostep;
+            twostep=temp;
+        }
+        return onestep;
