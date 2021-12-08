@@ -1,0 +1,50 @@
+https://leetcode.com/problems/counting-bits/
+
+
+write out all bits and find a pattern. dp
+
+
+        vector<int> dp(n+1,0);
+        if(n==0) return dp;
+dp[1]=1;
+        if(n==1) return dp;
+dp[2]=1;
+        if(n==2) return dp;
+for(int i=3;i<=n;i++) {
+    //didnt know how to get all 2 powers but knew this logic
+    if(ceil(log2(i))==floor(log2(i))) dp[i]=1;
+    
+    //didnt know logic
+    else if(i%2==0) {
+        int k=i/2;
+         dp[i]=dp[k];
+        
+    }
+    // knew logic
+    else dp[i]=dp[i-1]+1;
+}
+return dp;
+        
+     }
+     
+     
+     smarter soln--
+     
+     
+     we see pattern that every integer is 1+dp[i-offset] where offset is [1,2,4,8,16,32....]--offset array
+        for 0 it is 0
+        for 1 it is 1+dp[1-1]=1
+        we have to change offset whenever i is any value in offset array
+        so when i=2, offset will be 2 now (until i=4)
+        for 2 it is 1+dp[2-2]=1
+        for 3 it is 1+dp[3-2]=2... so on
+        
+        vector<int> dp(n+1,0);       
+        int offset=1;
+        dp[0]=0;
+        for(int i=1;i<n+1;i++) {
+            if(offset*2==i)
+                offset=i;
+            dp[i]=1+dp[i-offset];
+        }
+        return dp;
