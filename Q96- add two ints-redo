@@ -1,0 +1,16 @@
+https://leetcode.com/problems/sum-of-two-integers/submissions/
+
+
+We get sum of two integers without adding carry by using XOR
+to get carry, we have to and the two ints and then add it to sum
+we left shift add so that we get the carry bit to add to the i+1th bit of sum
+we use unsigned toallow -ve ints
+
+    int getSum(int a, int b) {
+        while(b!=0) {
+            unsigned int temp= (a&b);
+            a=a^b;
+            b=(int)(temp<<1);
+        }
+        return a;
+    }
