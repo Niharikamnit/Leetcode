@@ -1,0 +1,83 @@
+https://practice.geeksforgeeks.org/problems/minimum-sum-partition3317/1
+
+we know that the max range of sum is summ of all elements in array
+so S1(sum of subset 1) and S2(sum of subset 2) should lie between 0 to sum of all elements
+and S2= Range or total sum - S1
+So we have to minimize S2-S1 i.e Range -2S1 To minimize this S1 should be maximum but less than Range/2 so start from range/2 and check if that subset sum exists. if it exists that will b the min diff of sums
+
+my code--
+ TLE
+  
+    bool isSubsetSum(int N, int arr[], int sum){
+         bool dp[N+1][sum+1];
+         memset(dp,false,sizeof(dp));
+         for (int i = 0; i <= N; i++)
+         dp[i][0] = true;
+ 
+         for (int i = 1; i <= sum; i++)
+         dp[0][i] = false;
+         
+         for(int i=1;i<=N;i++) {
+             for(int j=1;j<=sum;j++) {
+                 
+                     if(arr[i-1]<=j)
+                     dp[i][j]=dp[i-1][j]||dp[i-1][j-arr[i-1]];
+                     
+                     else dp[i][j]=dp[i-1][j];
+             }
+         }
+         return dp[N][sum];
+     }
+  
+	int minDifference(int arr[], int n)  { 
+	    // Your code goes here
+	    int sum=0;
+	    int diff=INT_MAX;
+	    for(int i=0;i<n;i++) sum+=arr[i];
+      
+	    for(int i=0;i<=ceil(sum/2);i++) {
+	        if(isSubsetSum(n,arr,i)) {
+	            diff=min(diff,abs((sum-i)-i));
+	        }
+	    }
+	    return diff;
+	} 
+  
+  optimise--
+  
+    
+    bool isSubsetSum(int N, int arr[], int sum){
+         bool dp[N+1][sum+1];
+         memset(dp,false,sizeof(dp));
+         for (int i = 0; i <= N; i++)
+         dp[i][0] = true;
+ 
+         for (int i = 1; i <= sum; i++)
+         dp[0][i] = false;
+         
+         for(int i=1;i<=N;i++) {
+             for(int j=1;j<=sum;j++) {
+                 
+                     if(arr[i-1]<=j)
+                     dp[i][j]=dp[i-1][j]||dp[i-1][j-arr[i-1]];
+                     
+                     else dp[i][j]=dp[i-1][j];
+             }
+         }
+         return dp[N][sum];
+     }
+  
+	int minDifference(int arr[], int n)  { 
+	    // Your code goes here
+	    int sum=0;
+	    int diff=INT_MAX;
+	    for(int i=0;i<n;i++) sum+=arr[i];
+	    
+	    for(int i=ceil(sum/2);i>=0;i--) {
+	        if(isSubsetSum(n,arr,i)) {
+	            diff=sum-2*i;
+	            break;
+	        }
+	    }
+	    return diff;
+	} 
