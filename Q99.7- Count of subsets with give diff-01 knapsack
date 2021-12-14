@@ -1,0 +1,45 @@
+https://www.youtube.com/watch?v=ot_XBHyqpFc&list=PL_z_8CaSLPWekqhdCPmFohncHwz8TY2Go&index=11
+
+given S1-S2=diff 
+wkt S1+S2= total sum of all elements 
+adding both equations 
+S1 = (diff+sumofarray)/2
+
+so find countofall subsets with sum S1, same will be the count of (sumofarray-S2) cuz S2=sumofarray-S1
+
+int countOfSubsets(int arr[], int n, int sum)
+	{        
+        int dp[n+1][sum+1];
+        int mod=1000000007;
+        memset(dp,0,sizeof(dp));
+        //if sum=0
+        for(int i=0;i<=n;i++) {
+            dp[i][0] = 1;
+        }
+        //if n=0;
+        for(int i=0;i<=sum;i++) {
+            dp[0][i]=0;
+        }
+        dp[0][0]=1;
+        for(int i=1;i<=n;i++) {
+            for(int j=1;j<=sum;j++) {
+                if(arr[i-1]<=j)
+                dp[i][j]=dp[i-1][j]%mod+dp[i-1][j-arr[i-1]]%mod;
+                
+                else dp[i][j]=dp[i-1][j]%mod;
+            }
+        }
+        return dp[n][sum]%mod;
+	}
+  
+  int countOfSubsetWithGivenDiff(int arr, int n, int diff) {
+  
+  int sum=0;
+  for(int i=0;i<n;i++) {
+  sum+=arr[i];
+  }
+  
+  int S1= (diff+sum)/2;
+  
+  return perfectSum(arr,n,S1);
+  }
