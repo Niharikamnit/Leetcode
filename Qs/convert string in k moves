@@ -1,0 +1,59 @@
+https://leetcode.com/problems/can-convert-string-in-k-moves/submissions/
+
+class Solution {
+public:
+    bool canConvertString(string s, string t, int k) {
+        if(s.length()!=t.length()) return false;
+        int freq[27];
+        memset(freq,0,sizeof(freq));
+        for(int i=0;i<k/26;i++) {
+            for(int i=1;i<=26;i++) freq[i]++;
+        }
+        for(int i=1;i<=k%26;i++) freq[i]++;
+        
+        int arr[s.length()];
+        for(int i=0;i<s.length();i++) {
+            arr[i] = t[i]-s[i];
+            if(t[i]-s[i]<0) arr[i]=26+t[i]-s[i];
+            
+        }
+       for(int i=0;i<s.length();i++) {
+           if(arr[i]==0) continue;
+           if(freq[arr[i]]==0) return false;
+           else {
+               freq[arr[i]]--;
+           }
+       }
+        return true;
+    }
+};
+
+
+
+better--
+
+class Solution {
+public:
+    bool canConvertString(string s, string t, int k) {
+        
+        map<int,int>mp;
+        int n=s.length(),m=t.length();
+        if(n!=m)
+            return false;
+        for(int i=0;i<n;i++)
+        {
+            int diff=int(t[i])-int(s[i]);
+            if(diff<0)
+                diff=26-abs(diff);
+            if(diff>0)
+                mp[diff]+=1;
+        }
+        bool ans=true;
+        for(auto i:mp)
+        {
+            if(k<26*(i.second-1)+i.first)
+                ans=false;
+        }
+        return ans;  
+    }
+};
