@@ -1,0 +1,23 @@
+https://leetcode.com/problems/partition-labels/submissions/
+
+can use map or array
+
+
+vector<int> partitionLabels(string s) {
+        int arr[26];
+        memset(arr,0,sizeof(arr));
+        for(int i=0;i<s.length();i++) arr[s[i]-97]=i;
+        vector<int> v;
+        int k=-1;
+        int l=0;
+        for(int i=0;i<s.length();i++) {
+            k=max(arr[s[i]-97],k);
+            l++;
+            if(k==i) {
+                v.push_back(l);
+                k=-1;
+                l=0;
+            }
+        }
+        return v;
+        }
