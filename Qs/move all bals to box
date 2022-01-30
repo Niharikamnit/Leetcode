@@ -1,0 +1,38 @@
+https://leetcode.com/problems/minimum-number-of-operations-to-move-all-balls-to-each-box/submissions/
+
+my---
+
+vector<int> posof1;
+ for(int i=0;i<boxes.length();i++) {
+            if(boxes[i]=='1')
+            posof1.push_back(i);
+        }
+        vector<int> ans(boxes.length(),0);
+        for(int i=0;i<boxes.length();i++) {
+            for(int j=0;j<posof1.size();j++) {
+                ans[i]+=abs(posof1[j]-i);
+            }
+        }
+        return ans;
+        
+        
+        optimal--- to calc left sum of boxes and add their ops and calc right sum of boxes and add their ops
+        
+            vector<int> minOperations(string boxes) {
+        int n=boxes.length();
+        vector<int> res(n,0);
+        int sum=boxes[0]-'0', last =0;;
+        //calc left sum
+        for(int i=1;i<n;i++) {
+            res[i]+=sum+last;
+            last=res[i];
+            sum+=boxes[i]-'0';
+        }
+        last=0,sum=boxes[n-1]-'0';
+        //calc rightsum
+        for(int i=n-2;i>=0;i--){
+            res[i]+=sum+last;
+            last=(sum+last);
+            sum+=(boxes[i]-'0');
+        }
+        return res;
