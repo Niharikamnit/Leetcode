@@ -1,5 +1,30 @@
 https://leetcode.com/problems/pancake-sorting/submissions/
 
+me-
+
+    vector<int> pancakeSort(vector<int>& arr) {
+        vector<int> ans;
+        int k=arr.size();
+        int curr=0;
+        while(1) {
+            //missed this
+            while (k && arr[k - 1] == k) k--;
+            if(k==0) break;
+            for(int i=0;i<arr.size();i++) {
+                if(arr[i]==k) {
+                    curr=i+1;
+                    break;
+                    }
+                else curr=-1;
+            }
+                ans.push_back(curr);
+                reverse(arr.begin(),arr.begin()+curr);
+                ans.push_back(k);
+                reverse(arr.begin(),arr.begin()+k);
+        }
+        return ans;
+    }
+
  int findElement(vector<int>& arr, int el) {
         for (int i = 0; i < arr.size(); i++) if (arr[i] == el) return i + 1;
         return -1;
