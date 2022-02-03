@@ -1,0 +1,32 @@
+https://leetcode.com/problems/find-and-replace-pattern/submissions/
+
+
+bool similarPattern (string &word, string &pattern) {
+        
+        vector<char> v1 (26, '0'), v2 (26, '0'); // stroring '0' for default case in vectors
+        
+        for (int i=0; i<word.size(); i++) {
+            
+            if (v1[word[i]-'a'] == '0')  // if not visited till now, then add. (Once added, value will never change again)
+                v1[word[i]-'a'] = pattern[i];
+            
+            if (v2[pattern[i]-'a'] == '0') // if not visited till now, then add
+                v2[pattern[i]-'a'] = word[i];
+            
+            if (v1[word[i]-'a'] != pattern[i] or v2[pattern[i]-'a'] != word[i]) // checking with values in vectors with charactes
+                return false;
+        }
+        return true;
+    }
+    
+    vector<string> findAndReplacePattern(vector<string>& words, string pattern) {
+        
+        vector<string> ans;
+        
+        for (auto a:words) {
+            if (similarPattern(a, pattern)) // sending each word and pattern
+                ans.push_back(a);
+        }
+        
+        return ans;
+    }
