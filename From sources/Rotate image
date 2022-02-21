@@ -1,0 +1,20 @@
+https://leetcode.com/problems/rotate-image/
+
+transpose the matrix then swap corner cols
+
+ void transpose(vector<vector<int>>& A) {
+        int N=A.size();
+    for (int i = 0; i < N; i++)
+        for (int j = i+1; j < N; j++)
+            swap(A[i][j], A[j][i]);
+    }
+    
+    void rotate(vector<vector<int>>& A) {
+        transpose(A);
+        int m=A.size();
+        for(int j=0;j<m/2;j++) {
+            for(int i=0;i<m;i++) {
+                swap(A[i][j],A[i][m-j-1]);
+            }
+        }
+    }
