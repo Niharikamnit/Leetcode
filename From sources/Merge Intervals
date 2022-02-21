@@ -1,0 +1,38 @@
+https://leetcode.com/problems/merge-intervals/submissions/
+
+
+my code idea--
+
+ sort(intervals.begin(),intervals.end());
+        vector<vector<int>> res;
+        int i=1;
+        int last=intervals[0][1];
+        int indx=0;
+        while(i<intervals.size()) {
+            if(intervals[i-1][1]>=intervals[i][0]) {
+                last=max(last,intervals[i][1]);
+            }
+            else {
+                res.push_back({intervals[indx][0],last});
+                indx=i;
+                last=intervals[i][1];
+            }
+            i++;
+        }
+        res.push_back({intervals[indx][0],last});
+        return res;
+        
+        
+        
+        soln- keep updating the last intervals's end time whenever new interval merged.
+        
+        sort(intervals.begin(),intervals.end());
+        vector<vector<int>> ans = {intervals[0]};
+        for(int i=1;i<intervals.size();i++){
+            if(intervals[i][0]>ans.back()[1]) // intervals can't be merged
+                ans.push_back(intervals[i]);
+            else
+                ans.back()[1] = max(ans.back()[1],intervals[i][1]); // intervals can be merged
+        }
+        return ans;
+        
