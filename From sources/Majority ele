@@ -1,0 +1,23 @@
+https://www.codingninjas.com/codestudio/problems/majority-element_842495?leftPanelTab=1
+
+Moore's voting algorithm
+
+
+
+ long long int cnt=0;
+        int major;
+        for(int i=0;i<n;i++) {
+            if(!cnt) major=arr[i];
+            
+            cnt += arr[i]==major?1:-1;
+        }
+        //algo ends here
+        //extra steps to make sure the majority elemt we found occurs >n/2
+    long long int ct=0;
+    for(int i=0;i<n;i++) {
+        if(major==arr[i]) ct++;
+    }
+        if(ct<=(n/2)) return -1;
+        else
+        return major;
+	}
