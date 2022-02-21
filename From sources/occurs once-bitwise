@@ -1,0 +1,12 @@
+https://www.codingninjas.com/codestudio/problems/occurs-once_1214969?leftPanelTab=1
+
+
+xor
+
+int occursOnce(vector<int> &a, int n){
+	// Write your code here.
+	int ans=a[0];
+    for(int i=1;i<n;i++) ans^=a[i];
+    
+    return ans;
+}
