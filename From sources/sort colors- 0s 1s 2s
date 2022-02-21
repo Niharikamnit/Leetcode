@@ -1,0 +1,19 @@
+https://leetcode.com/problems/sort-colors/submissions/
+
+O(N) O(1)
+
+if elemt is 2, swap it to the end. if 0 then beginning. 
+
+int begin=0,end=a.size()-1,mid=0;
+        while(begin<=end&&mid<=end) {
+            if(a[mid]==0) {
+                swap(a[begin],a[mid]);
+                begin++;
+                mid++;
+            }
+            else if(a[mid]==1) mid++;
+            else {
+                swap(a[mid],a[end]);
+                end--;
+            }
+        }
