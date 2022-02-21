@@ -1,0 +1,53 @@
+https://leetcode.com/problems/first-missing-positive/submissions/
+
+My approach - O(N) and O(N) using map
+
+        unordered_map<int,int> m;
+        int maxi=INT_MIN;
+        int mini=INT_MAX;
+        for(int i=0;i<nums.size();i++) {
+            maxi=max(nums[i],maxi);
+            mini=min(mini,nums[i]);
+            m[nums[i]]++;
+        }
+        if(maxi<0) return 1;
+        
+        for(int i=1;i<=maxi;i++) {
+            if(m.find(i)==m.end()) return i;
+        }
+        return maxi+1;
+        
+Optimised--
+
+O(N) O(1)
+
+1st- 
+      bring all positive numbers and less than n+1 to their places.
+      -ve and n+1 numbers are out of range. so ignore
+      
+        int n=nums.size();
+        for(int i=0;i<n;i++) {
+            while(nums[i]>0&&nums[i]<=n&&nums[i]!=nums[nums[i]-1])
+                swap(nums[i],nums[nums[i]-1]);
+        }
+        // the firt integer not in its place or -ve or greater than n+1
+        //will be the spot of the missing smallest positve
+        for(int i=0;i<n;i++) if(nums[i]!=i+1) return i+1;
+        //if all elemnts in place, then smallest will be max+1
+        return n+1;
+    }
+    
+    
+2nd- 
+
+    another soln. convert all -ve numbs to n+1 and for all +ve numbers <n, convert their nums[nums[i]-1] to -ve
+    we replace the negative values with n+1 values so that they will be out of the range
+we make the index negative if we found that value in the array. to denote that element (i+1) is already present
+we identify the index which is not negative and it will be the missing number(index that is not negative, is the value that is not present, 
+as we have made all the indexes of the value present to -ve)
+     
+     int n = nums.size();
+        for (int i = 0; i < n; i++) if (nums[i] <= 0) nums[i] = n + 1;
+        for (int i = 0; i < n; i++) if (abs(nums[i]) <= n && nums[abs(nums[i]) - 1] > 0) nums[abs(nums[i]) - 1] *= -1;
+        for (int i = 0; i < n; i++) if (nums[i] > 0) return i + 1;
+        return n + 1;
