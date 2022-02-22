@@ -1,0 +1,36 @@
+https://leetcode.com/problems/pascals-triangle-ii/
+
+
+As you know you can get any element of Pascal's Triangle in O(N) time and constant space complexity.
+for first row first column we have 1C1
+for second row first column we have 2C1
+for second row second column we have 2C2
+..... and so on
+Therefore we can infer, for ith row and jth column we have the number iCj
+
+And calculating this is pretty easy just in N time (factorial basically).
+
+==> nCr = n*(n-1)*(n-2)...(r terms) / 1*2*..........*(r-2)*(r-1)*r
+
+Now the question asks us to find the complete row.
+If we calculate all the elements in this manner it would be quadratic in time. But, since its formula is pretty sleek, we proceed as follows:
+
+suppose we have nCr and we have to find nC(r+1), like 5C3 and 5C4
+==> 5C3 = 5*4*3 / 1*2*3
+
+to get the next term we multiply numerator with its next term and denominator with its next term. As,
+==> 5C4 = 5*4*3 * 2 / 1*2*3 * 4
+
+We are following this simple maths logic to get the complete row in O(N) time.
+
+vector<int> getRow(int rowIndex) {
+        vector<int>result;
+        long val =1; // long? to avoid overflow(go through constraints given)
+        for(int i =0; i<= rowIndex; i++){
+          result.push_back(val);
+          val = val * (rowIndex - i) / (i+1);
+        }
+    return result;
+    }
+    
+    The nth element on the mth level of the pascal triangle is a combination of m & n i.e. mCn.
