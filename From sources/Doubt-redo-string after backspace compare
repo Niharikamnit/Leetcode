@@ -1,0 +1,134 @@
+https://leetcode.com/problems/backspace-string-compare/submissions/ 
+ 
+ 
+ 
+ 
+ bool backspaceCompare(string S, string T) {
+        int i = S.length() - 1, j = T.length() - 1, back;
+        while (true) {
+            back = 0;
+            while (i >= 0 && (back > 0 || S[i] == '#')) {
+                back += S[i] == '#' ? 1 : -1;
+                i--;
+            }
+            back = 0;
+            while (j >= 0 && (back > 0 || T[j] == '#')) {
+                back += T[j] == '#' ? 1 : -1;
+                j--;
+            }
+            if (i >= 0 && j >= 0 && S[i] == T[j]) {
+                i--;
+                j--;
+            } else {
+                break;
+            }
+        }
+        return i == -1 && j == -1;
+    }
+    
+    
+    
+    another approach---
+    
+    Implementation using two pointer- 1st to traverse the string and second to store the character at given position
+
+Suppose 2 pointer i & k
+Start traversing the by first pointer(i) if it is # then decrease the 2nd pointer(k )(k>=0) .And if it is not # then increase the pointer(k) and store the element at k th position.
+S[k]=S[i]
+Same will be done to 2nd string And suppose its 2nd pointer is p
+If k and p are not equal means the string have differnt length. If same, then compare every element.
+class Solution {
+public:
+    bool backspaceCompare(string s, string t) {
+        int k=0,p=0;
+        for(int i=0;i<s.size();i++)
+        {
+            if(s[i]=='#')
+            {
+                k--;
+                 k=max(0,k);
+            }
+            
+           else
+           {
+               s[k]=s[i];
+               k++;
+           }
+        }
+        for(int i=0;i<t.size();i++)
+        {
+            if(t[i]=='#')
+            {
+                p--;
+                 p=max(0,p);
+            }
+            
+           else
+           {
+               t[p]=t[i];
+               p++;
+           }
+        }
+        if(k!=p)
+            return false;
+        else
+        {
+            for(int i=0;i<k;i++)
+            {
+                if(s[i]!=t[i])
+                    return false;
+            }
+            return true;
+        }
+        
+    }
+};
+
+
+
+with stack- O(N) O(N)
+
+class Solution {
+public:
+    bool backspaceCompare(string S, string T) {
+            
+         stack <int> s1,s2;
+         string str1,str2; 
+            
+         for(int i = 0; i < S.size(); i++){
+                 
+                 if(S[i] == '#' && !s1.empty())
+                         s1.pop();
+                 
+                 else if(S[i] != '#')
+                         s1.push(S[i]);
+                 
+         }
+         
+         for(int i = 0; i < T.size(); i++){
+                 
+                 if(T[i] == '#' && !s2.empty())
+                         s2.pop();
+                 
+                 else if(T[i] != '#')
+                         s2.push(T[i]);
+                 
+         }
+            
+         while(!s1.empty()){
+                 
+                 str1.push_back(s1.top());
+                 s1.pop();
+                 
+         }
+            
+         while(!s2.empty()){
+                 
+                 str2.push_back(s2.top());
+                 s2.pop();
+                 
+         }      
+            
+         return str1 == str2;   
+    }
+};
