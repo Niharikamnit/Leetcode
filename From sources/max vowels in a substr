@@ -1,0 +1,26 @@
+https://leetcode.com/problems/maximum-number-of-vowels-in-a-substring-of-given-length/submissions/
+
+ bool isVowel(char c) {
+        if(c=='a'||c=='e'||c=='i'||c=='o'||c=='u') return true;
+        return false;
+    }
+    int maxVowels(string s, int k) {
+        int maxi=INT_MIN;
+        int cnt=0;
+        for(int i=0;i<k;i++) {
+            if(isVowel(s[i])) cnt++;
+        }
+        maxi=cnt;
+        for(int i=k;i<s.length();i++) {
+            if(isVowel(s[i])==false) {
+                if(isVowel(s[i-k])) 
+                    cnt--;
+                maxi=max(maxi,cnt);
+            }else {
+                if(isVowel(s[i-k])==false) 
+                    cnt++;                
+                maxi=max(maxi,cnt);
+            }
+        }
+        return maxi;
+    }
