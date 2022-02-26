@@ -12,3 +12,32 @@ https://leetcode.com/problems/number-of-steps-to-reduce-a-number-to-zero/submiss
         }
         return dp[num];
     }
+
+
+sllyyy--
+
+https://practice.geeksforgeeks.org/problems/minimum-steps-to-minimize-n-as-per-given-condition0618/1/#
+
+	int minSteps(int N) 
+	{ 
+	    // Your code goes here
+	    int dp[10001]={0};
+	    dp[0]=0;
+	    dp[1]=0;
+	    dp[2]=1;
+	    dp[3]=1;
+	    dp[4]=2;
+	    int k1=INT_MAX,k2=INT_MAX;
+	    for(int i=5;i<=N;i++) {
+	       // if(i%2==0) dp[i]=1+dp[i/2];
+	       // else if(i%3==0) dp[i]=1+dp[i/3];
+	       // else dp[i]=1+dp[i-1];
+	       if(i%2==0) k1=1+dp[i/2];
+	       else k1=INT_MAX;
+	       if(i%3==0) k2=1+dp[i/3];
+	       else k2=INT_MAX;
+	       
+	       dp[i]= min(k1,min(k2,1+dp[i-1]));
+	    }
+	    return dp[N];
+	} 
