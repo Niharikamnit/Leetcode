@@ -1,0 +1,13 @@
+https://leetcode.com/problems/min-cost-climbing-stairs/submissions/
+
+int minCostClimbingStairs(vector<int>& cost) {
+        int dp[1002]={0};
+        dp[0]=0;
+        dp[1]=0;
+        dp[2]=0;
+        cost.push_back(0);
+        for(int i=3;i<=cost.size();i++) {
+            dp[i]=min(cost[i-2]+dp[i-1],cost[i-3]+dp[i-2]);
+        }
+        return dp[cost.size()];
+    }
