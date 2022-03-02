@@ -1,0 +1,31 @@
+https://leetcode.com/problems/number-of-good-ways-to-split-a-string/submissions/
+
+ int numSplits(string s) {
+        int freq[26]={0};
+        int n=s.length();
+        int cntL[n],cntR[n];
+        cntR[n-1]=1;
+        freq[s[n-1]-97]++;
+        for(int i=n-2;i>=0;i--) {
+            if(freq[s[i]-97]==0) cntR[i]=cntR[i+1]+1;
+            else cntR[i]=cntR[i+1];
+            freq[s[i]-97]++;
+        }
+        memset(freq,0,sizeof(freq));
+        cntL[0]=1;
+        freq[s[0]-97]++;
+        for(int i=1;i<n;i++) {
+            if(freq[s[i]-97]==0) {
+                cntL[i]=cntL[i-1]+1;
+            }
+            else {
+                cntL[i]=cntL[i-1];
+            }
+            freq[s[i]-97]++;
+        }
+        int cnt=0;
+        for(int i=1;i<n;i++) {
+            if(cntL[i-1]==cntR[i]) cnt++;
+        }
+        return cnt;
+    }
