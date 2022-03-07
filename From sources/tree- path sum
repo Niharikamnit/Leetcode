@@ -26,3 +26,99 @@ https://leetcode.com/problems/path-sum/discuss/?currentPage=1&orderBy=most_votes
         }
         return false;
     }
+
+
+path sum II
+
+https://leetcode.com/problems/path-sum-ii/submissions/
+
+void solve(TreeNode* root, int targetSum, vector<int> &v, vector<vector<int>> &ans) {
+        if(root==NULL) return;
+        if(root->left==NULL&&root->right==NULL&&targetSum==root->val) {
+            v.push_back(root->val);
+            ans.push_back(v);
+            v.pop_back();
+            return;
+        }
+        
+        v.push_back(root->val);
+        solve(root->left,targetSum-root->val,v,ans);
+        solve(root->right,targetSum-root->val,v,ans);
+        v.pop_back();
+        
+        return;
+        
+    }
+    vector<vector<int>> pathSum(TreeNode* root, int targetSum) {
+        vector<int> v;
+        vector<vector<int>> ans;
+        solve(root,targetSum,v,ans);
+        return ans;
+    }
+    
+    
+    Solution 2:(BFS):
+
+In BFS we traverse level by level,
+so, for a particular node at any level,
+we must have to store,
+1) Sum (From Root to current node)
+2) Path (We have to store the Path which will contain all the nodes from Root to current node).
+
+At each step whenever we are popping out the nodes from queue,
+we need to compare the currentSum with the TargetSum,
+if CurrentSum == TargetSum,
+then we can store the currentPath to our answer.
+C++:
+
+class Solution {
+bool isLeaf(TreeNode *root)
+{
+    return !root->left and !root->right;
+}
+
+vector<vector<int>> getAllPaths(TreeNode *root,int targetSum)
+{
+// Queue stores {TreeNode , Sum From Root To TreeNode, Path containing Nodes From Root To Current Node}
+    queue<pair<TreeNode*,pair<int,vector<int> > > > q;
+    vector<vector<int>> res;
+    if(!root)
+        return res;
+// Start with Root Node with currentSum == root->val and Path = {root->val}
+    q.push({root,{root->val,{root->val}}});
+    while(!q.empty())
+    {
+        auto front = q.front();
+        q.pop();
+        TreeNode *treeNode = front.first;
+        int currentSum = front.second.first;
+        vector<int> currentPath = front.second.second;
+//         Check if we reach the leaf node with currentSum equals to TargetSum
+        if(isLeaf(treeNode) and currentSum == targetSum)
+        {
+//          Push one Path into the final Answer
+            res.push_back(currentPath);
+        }
+        if(treeNode->left)
+        {
+            vector<int> leftPath = currentPath;
+            leftPath.push_back(treeNode->left->val);
+//          Store the left child with new sum and path,
+            q.push({treeNode->left,{currentSum + treeNode->left->val,leftPath}});
+        }
+        if(treeNode->right)
+        {
+            vector<int> rightPath = currentPath;
+            rightPath.push_back(treeNode->right->val);
+//          Store the right child with new sum and path,
+            q.push({treeNode->right,{currentSum + treeNode->right->val,rightPath}});
+        }
+    }
+    return res;
+}
+
+public:
+    vector<vector<int>> pathSum(TreeNode* root, int targetSum) {
+        return getAllPaths(root,targetSum);
+    }
+};
