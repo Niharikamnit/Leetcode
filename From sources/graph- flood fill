@@ -1,0 +1,24 @@
+https://leetcode.com/problems/flood-fill/submissions/
+
+    void dfs(int i, int j, vector<vector<int>>& image, int newColor, int n, int m,int col) {
+        if(i>=n||i<0||j>=m||j<0) return;
+        if(image[i][j]!=col||image[i][j]==newColor) return;
+        
+        if(image[i][j]==col)
+        image[i][j]=newColor;
+        
+        dfs(i+1,j,image,newColor,n,m,col);
+        dfs(i,j+1,image,newColor,n,m,col);
+        dfs(i-1,j,image,newColor,n,m,col);
+        dfs(i,j-1,image,newColor,n,m,col);
+        
+        return;
+    }
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int newColor) {
+        int n=image.size();
+        int m=image[0].size();
+        int col = image[sr][sc];
+        dfs(sr,sc,image,newColor,n,m,col);
+        return image;
+    }
+};
