@@ -180,3 +180,53 @@ https://leetcode.com/problems/max-area-of-island/submissions/
     int closedIsland(vector<vector<int>>& grid) {
         return numIslands(grid);
     }
+    
+    
+    
+    
+    no.of sub islands in grid 2
+    
+    
+    https://leetcode.com/problems/count-sub-islands/submissions/
+    
+        void dfs(int i,int j,vector<vector<int>>& grid1,vector<vector<int>>& grid2,int &flag,vector<vector<bool>> &vis){
+        
+        if(i<0 || j<0 || i>=grid2.size() || j>=grid2[0].size() || grid2[i][j]==0||vis[i][j]){
+            return;
+        }
+        
+        if(grid1[i][j]!=grid2[i][j]){
+            flag = 0;
+        } 
+        
+        vis[i][j] = true;
+        
+        dfs(i-1,j,grid1,grid2,flag,vis);
+        dfs(i,j-1,grid1,grid2,flag,vis);
+        dfs(i+1,j,grid1,grid2,flag,vis);
+        dfs(i,j+1,grid1,grid2,flag,vis);
+        
+    }
+    int countSubIslands(vector<vector<int>>& grid1, vector<vector<int>>& grid2) {
+        
+        int ans=0;
+        int n=grid1.size();
+        int m=grid1[0].size();
+        vector<vector<bool>> vis(n,vector<bool>(m,false));
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                
+                if(grid2[i][j]==1&&vis[i][j]==false){
+                    
+                    int flag=1;
+                    dfs(i,j,grid1,grid2,flag,vis);
+                    if(flag){
+                       ans+=1;
+                    }
+                    
+                }
+            }
+        }
+        
+        return ans;
+    }
