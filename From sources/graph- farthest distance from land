@@ -1,0 +1,107 @@
+https://leetcode.com/problems/as-far-from-land-as-possible/submissions/
+
+   will give tle
+    this is what i attempted at
+    For each 'land' cell, start DFS and record the distance in 'water' cells.
+
+If the distance in the 'water' cell is smaller than the current distance, we stop there. Otherwise, we update the distance to the smaller value and keep going.
+
+So our grid will have the following values:
+
+1 for land
+0 for water
+>=2 water with the recorded distance
+In the end, we scan the grid again and returning the largest value.
+
+In this example, the cells contains distances after DFS is complete for each land cell. In the end, the maximum distance from the land is 3 (4 - 1).
+
+    void dfs(vector<vector<int>>& g, int i, int j, int dist = 1) {
+  if (i < 0 || j < 0 || i >= g.size() || j >= g[i].size() || (g[i][j] != 0 && g[i][j] <= dist)) return;
+  g[i][j] = dist;
+  dfs(g, i - 1, j, dist + 1), dfs(g, i + 1, j, dist + 1), dfs(g, i, j - 1, dist + 1), dfs(g, i, j + 1, dist + 1);
+}
+int maxDistance(vector<vector<int>>& g, int mx = -1) {
+  for (auto i = 0; i < g.size(); ++i)
+    for (auto j = 0; j < g[i].size(); ++j)
+      if (g[i][j] == 1) {
+          g[i][j] = 0;
+          dfs(g, i, j);
+      }
+  for (auto i = 0; i < g.size(); ++i)
+    for (auto j = 0; j < g[i].size(); ++j)
+      if (g[i][j] > 1) mx = max(mx, g[i][j] - 1);
+  return mx;
+}
+
+//bfs- push all the land cells into queue and bfs to calc the max dist as soon as water is encountereed
+    int maxDistance(vector<vector<int>>& grid) {
+        int res = -1;
+        
+        if (grid.empty() || grid[0].empty())
+        {
+            return res;
+        }
+        
+        vector<vector<int>> gridValues(grid.size(), vector<int>(grid[0].size(), INT_MAX));
+        
+        queue<pair<int, int>> q;
+        
+		// Step 1: find all lands and push them to a queue. Mark the distance to themselves as 0.
+        for (int i = 0; i < grid.size(); ++i)
+        {
+            for (int j = 0; j < grid[0].size(); ++j)
+            {
+                if (grid[i][j] == 1)
+                {
+                    q.push(make_pair(i, j));
+                    gridValues[i][j] = 0;
+                }
+            }
+        }
+        
+        if (q.empty())
+        {
+            return -1;
+        }
+        
+        vector<int> dx({0, 1, 0, -1});
+        vector<int> dy({1, 0, -1, 0});
+        
+        while (!q.empty())
+        {
+            auto pos = q.front();
+            q.pop();
+            
+            for (int i = 0; i < 4; ++i)
+            {
+                int x = pos.first + dx[i];
+                int y = pos.second + dy[i];
+                
+                if (x >= 0 && x < grid.size() && y >= 0 && y < grid[0].size())
+                {
+                    //all water cells
+                    if (gridValues[x][y] == INT_MAX)
+                    {
+                        q.push(make_pair(x, y));
+                    }
+                    
+					// Step 2: The current cell should be updated to the distance to nearest land cell. 
+                    gridValues[x][y] = min(gridValues[x][y], gridValues[pos.first][pos.second] + 1);
+                }
+            }
+        }
+        
+		// Step 3: find the maximum values in gridValues.
+        for (int i = 0; i < grid.size(); ++i)
+        {
+            for (int j = 0; j < grid[0].size(); ++j)
+            {
+                if (grid[i][j] == 0)
+                {
+                    res = max(res, gridValues[i][j]);
+                }
+            }
+        }
+        
+        return res;
+    }
