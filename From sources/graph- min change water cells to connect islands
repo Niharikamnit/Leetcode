@@ -1,0 +1,74 @@
+https://leetcode.com/problems/shortest-bridge/submissions/
+
+
+
+
+Do DFS to find the connected comp and then find the shortest dist between the two connected comps
+
+ bool isValid(int i, int j, int n, int m, vector<vector<int>>& grid,vector<vector<bool>>& vis) {
+        if(i>=n||j>=m||i<0||j<0||grid[i][j]!=1||vis[i][j]==true) return false;
+        return true;
+    }
+    void dfs(int i, int j, int k, vector<vector<int>>& grid, int n, int m, vector<vector<bool>>& vis){
+        if(isValid(i,j,n,m,grid,vis)==false) return;
+        grid[i][j]=k;
+        vis[i][j]=true;
+        dfs(i+1,j,k,grid,n,m,vis);
+        dfs(i-1,j,k,grid,n,m,vis);
+        dfs(i,j+1,k,grid,n,m,vis);
+        dfs(i,j-1,k,grid,n,m,vis);
+    }
+    int shortestBridge(vector<vector<int>>& grid) {
+        int n=grid.size();
+        int m=grid[0].size();
+        vector<vector<bool>> vis(n,vector<bool>(m,false));
+        bool flag=false;
+        for(int i=0;i<n;i++) {
+            for(int j=0;j<m;j++) {
+                if(grid[i][j]==1){
+                    dfs(i,j,2,grid,n,m,vis);
+                    flag=true;
+                    break;
+                }
+            }
+            if(flag) break;
+        }
+        //no need to paint second island
+        // for(int i=0;i<n;i++) {
+        //     for(int j=0;j<m;j++) {
+        //         if(grid[i][j]==1){
+        //             dfs(i,j,2,grid,n,m,vis);
+        //             break;
+        //         }
+        //     }
+        // }
+        vector<pair<int, int>> q;
+        for(int i=0;i<n;i++) {
+            for(int j=0;j<m;j++) {
+                if(grid[i][j]==2){
+                   q.push_back({i,j});
+                }
+            }
+        }
+        int dx[4]={1,0,-1,0};
+        int dy[4]={0,1,0,-1};
+    while (!q.empty()) {
+        vector<pair<int, int>> q1;
+        for (auto [i, j] : q) {
+            for (int d = 0; d < 4; ++d) {
+                int x = i + dx[d], y = j + dy[d];
+                if (min(x, y) >= 0 && max(x, y) < grid.size()) {
+                    if (grid[x][y] == 1)
+                        return grid[i][j]-2;
+                    if (grid[x][y] == 0) {
+                        grid[x][y] = grid[i][j] + 1;
+                        q1.push_back({x, y});
+                    }
+                }
+            }
+        }
+        swap(q, q1);
+    }
+        return -1;
+    }
+    
