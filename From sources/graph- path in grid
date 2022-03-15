@@ -1,0 +1,127 @@
+https://leetcode.com/problems/shortest-path-in-binary-matrix/
+
+
+DFS- TLE
+
+class Solution {
+private:
+    // support variables
+    int maxX, maxY, res = 1;
+    int dfs(vector<vector<int>>& grid, int cx = 0, int cy = 0) {
+        // check if we reached the target
+        if (cx == maxX && cy == maxY) return res;
+        // support variable
+        int partRes = INT_MAX;
+        // marking the cell as visited and increasing res
+        grid[cy][cx] = -1;
+        res++;
+        for (int x = max(0, cx - 1), lmtX = min(cx + 1, maxX); x <= lmtX; x++) {
+            for (int y = max(0, cy - 1), lmtY = min(cy + 1, maxY); y <= lmtY; y++) {
+                if (!grid[y][x]) {
+                    partRes = min(partRes, dfs(grid, x, y));
+                }
+            }
+        }
+        // backtracking the cell as non-visited and decreasing res
+        grid[cy][cx] = 0;
+        res--;
+        return partRes;
+    }
+public:
+    int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
+        // edge case: start or end not accessible
+        if (grid[0][0] || grid.back().back()) return -1;
+        maxX = grid[0].size() - 1, maxY = grid.size() - 1;
+        // searching from the starting point
+        res = dfs(grid);
+        return res == INT_MAX ? -1 : res;
+    }
+};
+
+
+
+BFS- MINE
+
+class Solution {
+public:
+    int dx[8]={1,-1,0,0,1,-1,1,-1};
+    int dy[8]={0,0,1,-1,1,-1,-1,1};
+    int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
+        queue<pair<int,int>> q;
+        q.push({0,0});
+        int n=grid.size();
+        vector<int> path;
+        int dist[n][n];
+        if(grid[0][0]==1||grid[n-1][n-1]==1) return -1;
+        memset(dist,0,sizeof(dist));
+        vector<vector<bool>> vis(n,vector<bool>(n,false));
+        vis[0][0]=true;
+        dist[0][0]=1;
+        while(!q.empty()) {
+            pair<int,int> u=q.front();
+            q.pop();
+            if(u.first==n-1&&u.second==n-1) break;
+            
+            else {
+                for(int i=0;i<8;i++) {
+                    int x=dx[i]+u.first;
+                    int y=dy[i]+u.second;
+                    if(x<n&&y<n&&x>=0&&y>=0&&vis[x][y]==false&&grid[x][y]==0){
+                        q.push({x,y});
+                        vis[x][y]=true;
+                        dist[x][y]=1+dist[u.first][u.second];
+                    }
+                    
+                }
+            }
+        }
+        if(dist[n-1][n-1]==0) return -1;
+        else return dist[n-1][n-1];
+    }
+};
+
+
+DOUBLE BFS- VISITING DIAGONAL FIRST
+
+class Solution {
+public:
+    int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
+        // edge case: start or end not accessible
+        if (grid[0][0] || grid.back().back()) return -1;
+        // support variables
+        int res = 2, len = 1, maxX = grid[0].size() - 1, maxY = grid.size() - 1;
+        queue<pair<int, int>> q1, q2;
+        bool isStartTurn = true;
+        // edge case: single cell matrix
+        if (!maxX && !maxY) return 1 - (grid[0][0] << 1);
+        // adding the start and ending points
+        q1.push({0, 0});
+        q2.push({maxX, maxY});
+        // marking start and ending points as visited
+        grid[0][0] = -1;
+        grid[maxY][maxX] = -2;
+        while (len) {
+            while (len--) {
+                // reading and popping the coordinates on the front of the queue
+                auto [cx, cy] = (isStartTurn ? q1 : q2).front();
+                (isStartTurn ? q1 : q2).pop();
+                for (int x = max(0, cx - 1), lmtX = min(cx + 1, maxX); x <= lmtX; x++) {
+                    for (int y = max(0, cy - 1), lmtY = min(cy + 1, maxY); y <= lmtY; y++) {
+                        // check if we reached an already visited cell fromm the other side
+                        if (grid[y][x] == (isStartTurn ? -2 : -1)) return res;
+                        // marking it as visited and adding it to the q if it was still a valid cell
+                        if (!grid[y][x]) {
+                            grid[y][x] = isStartTurn ? -1 : -2;
+                            (isStartTurn ? q1 : q2).push({x, y});
+                        }
+                    }
+                }
+            }
+            // preparing for the next loop
+            res++;
+            isStartTurn = !isStartTurn;
+            len = (isStartTurn ? q1 : q2).size();
+        }
+        return -1;
+    }
+};
