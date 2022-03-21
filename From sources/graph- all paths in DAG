@@ -1,0 +1,29 @@
+https://leetcode.com/problems/all-paths-from-source-to-target/submissions/
+
+ void dfs(vector<vector<int>>& graph, int v, vector<bool>& vis, vector<vector<int>> &ans, vector<int> &vec){
+        if(v==graph.size()-1) {
+                    vec.push_back(v);
+                    ans.push_back(vec);
+            vec.pop_back();
+            return;
+        }
+        vis[v]=true;
+        vec.push_back(v);
+            for(auto i:graph[v]) {
+                if(vis[i]==false){
+                    dfs(graph,i,vis,ans,vec);
+                }
+                
+            }
+            vec.pop_back();
+        vis[v]=false;
+        
+    }
+    
+    vector<vector<int>> allPathsSourceTarget(vector<vector<int>>& graph) {
+        vector<int> vec;
+        vector<vector<int>> ans;
+        vector<bool> vis(graph.size(),false);
+        dfs(graph,0,vis,ans,vec);
+        return ans;
+    }
