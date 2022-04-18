@@ -1,5 +1,5 @@
 # Maximum Sum Bitonic Subsequence
-##  Easy 
+## Easy 
 <div class="problem-statement">
                 <p></p><p><span style="font-size:20px"><span style="font-family:arial,helvetica,sans-serif">Given an array arr[]&nbsp;of N integers. A <a href="http://en.wikipedia.org/wiki/Subsequence" target="_blank">subsequence&nbsp;</a>of arr[]&nbsp;is called Bitonic if it is first increasing then decreasing. Print the max sum bitonic subsequence.<br>
 <br>
