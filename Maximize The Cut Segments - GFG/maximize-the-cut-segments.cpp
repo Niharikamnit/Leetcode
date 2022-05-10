@@ -14,16 +14,16 @@ class Solution
     int maximizeTheCuts(int n, int x, int y, int z)
     {
         //Your code here
-        int minimum;
-    if (x < y && x < z)
-        minimum = x;
-    if (y < x && y < z)
-        minimum = y;
-    if (z < y && z < x)
-        minimum = z;
+    //     int minimum;
+    // if (x < y && x < z)
+    //     minimum = x;
+    // if (y < x && y < z)
+    //     minimum = y;
+    // if (z < y && z < x)
+    //     minimum = z;
 
-    if (minimum != 0 && n % minimum == 0)
-        return (n / minimum);
+    // if (minimum != 0 && n % minimum == 0)
+    //     return (n / minimum);
 
     int dp[n + 1];
     for (int i = 1; i <= n; i++)
